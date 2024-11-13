@@ -119,5 +119,19 @@ function renderErrorsToView($error) {
     return $html;
 }
 
+function guard() {
+    // Ensure the session is started before accessing session variables
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    // Check if the user is not logged in (i.e., 'email' is not set or is empty)
+    if (empty($_SESSION['email'])) {
+        // Redirect to the login page (index.php)
+        header("Location: index.php");
+        exit; // Terminate the script to ensure no further code is executed
+    }
+}
+
 
 ?>
