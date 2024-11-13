@@ -133,5 +133,40 @@ function guard() {
     }
 }
 
+function validateStudentData(array $student_data): array {
+    // Initialize an empty array to store error messages
+    $errors = [];
+
+    // Validation checks for each required field
+    if (empty($student_data['student_id'])) {
+        $errors[] = "Student ID is required.";
+    } elseif (!preg_match('/^\d{5,10}$/', $student_data['student_id'])) {
+        $errors[] = "Student ID must be between 5 and 10 digits.";
+    }
+
+    if (empty($student_data['first_name'])) {
+        $errors[] = "First Name is required.";
+    } elseif (!preg_match('/^[a-zA-Z\s-]+$/', $student_data['first_name'])) {
+        $errors[] = "First Name must contain only letters, spaces, or hyphens.";
+    }
+
+    if (empty($student_data['last_name'])) {
+        $errors[] = "Last Name is required.";
+    } elseif (!preg_match('/^[a-zA-Z\s-]+$/', $student_data['last_name'])) {
+        $errors[] = "Last Name must contain only letters, spaces, or hyphens.";
+    }
+
+    return $errors;
+}
+
+function checkDuplicateStudentData(array $student_data): string {
+    // Check for duplicate student ID in the current session students array
+    foreach ($_SESSION['students'] as $student) {
+        if (strcasecmp($student['student_id'], $student_data['student_id']) === 0) {
+            return "Duplicate Student ID found.";
+        }
+    }
+    return "";
+}
 
 ?>
