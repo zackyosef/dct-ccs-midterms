@@ -225,4 +225,41 @@ function checkDuplicateSubjectData(array $subject_data): ?string {
     return null; // No duplicates found
 }
 
+function validateAttachedSubject(array $subject_data): array {
+    // If the subject data array is empty, return an error message
+    if (empty($subject_data)) {
+        return ["At least one subject must be selected."];
+    }
+
+    // If no issues, return an empty array indicating no errors
+    return [];
+}
+
+/**
+ * Get the index of the selected subject based on its subject code.
+ *
+ * @param string $subject_code The subject code to search for.
+ * @return int|null Returns the index if found, otherwise null.
+ */
+function getSelectedSubjectIndex(string $subject_code): ?int {
+    foreach ($_SESSION['subjects'] as $index => $subject) {
+        if ($subject['subject_code'] === $subject_code) {
+            return $index;
+        }
+    }
+
+    // Return null if the subject is not found
+    return null;
+}
+
+/**
+ * Get the data of the selected subject based on its index.
+ *
+ * @param int $index The index of the subject in the subjects array.
+ * @return array|null Returns the subject data if found, otherwise null.
+ */
+function getSelectedSubjectData(int $index): ?array {
+    return $_SESSION['subjects'][$index] ?? null;
+}
+
 ?>
