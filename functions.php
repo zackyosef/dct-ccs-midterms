@@ -185,4 +185,44 @@ function getSelectedStudentData(int $index): ?array {
     return $_SESSION['students'][$index] ?? null;
 }
 
+function validateSubjectData(array $subject_data): array {
+    // Initialize an empty array to store error messages
+    $errors = [];
+
+    // Validate subject code
+    if (empty($subject_data['subject_code'])) {
+        $errors[] = "Subject Code is required.";
+    } elseif (!preg_match('/^[A-Z0-9]{3,10}$/', $subject_data['subject_code'])) {
+        $errors[] = "Subject Code must be between 3 and 10 uppercase alphanumeric characters.";
+    }
+
+    // Validate subject name
+    if (empty($subject_data['subject_name'])) {
+        $errors[] = "Subject Name is required.";
+    } elseif (!preg_match('/^[a-zA-Z\s]+$/', $subject_data['subject_name'])) {
+        $errors[] = "Subject Name must contain only letters and spaces.";
+    }
+
+    return $errors;
+}
+
+function checkDuplicateSubjectData(array $subject_data): ?string {
+    // Check if the subject already exists in session
+    if (!isset($_SESSION['subjects'])) {
+        return null; // If no subjects exist, return null
+    }
+
+    foreach ($_SESSION['subjects'] as $subject) {
+        // Check if the subject code or name already exists (case-insensitive comparison)
+        if (strcasecmp($subject['subject_code'], $subject_data['subject_code']) === 0) {
+            return "Duplicate Subject Code: " . htmlspecialchars($subject_data['subject_code'], ENT_QUOTES, 'UTF-8') . " already exists.";
+        }
+        if (strcasecmp($subject['subject_name'], $subject_data['subject_name']) === 0) {
+            return "Duplicate Subject Name: " . htmlspecialchars($subject_data['subject_name'], ENT_QUOTES, 'UTF-8') . " already exists.";
+        }
+    }
+
+    return null; // No duplicates found
+}
+
 ?>
