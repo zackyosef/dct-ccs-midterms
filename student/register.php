@@ -2,7 +2,7 @@
 $includeHeader = true;
 $includeFooter = true;
 
-$includeHeader ? require_once 'header.php' : null;
+$includeHeader ? require_once '../header.php' : null;
 
 require_once '../functions.php';
 
@@ -136,5 +136,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </div>
 
 <?php
-$includeFooter ? require_once 'footer.php' : null;
+$includeFooter ? require_once '../footer.php' : null;
 ?>

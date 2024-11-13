@@ -169,4 +169,20 @@ function checkDuplicateStudentData(array $student_data): string {
     return "";
 }
 
+function getSelectedStudentIndex(string $student_id): ?int {
+    // Iterate through students to find the index of the student with the given ID
+    foreach ($_SESSION['students'] as $index => $student) {
+        if (isset($student['student_id']) && $student['student_id'] === $student_id) {
+            return $index; // Return the index if the student is found
+        }
+    }
+
+    return null; // Return null if the student is not found
+}
+
+function getSelectedStudentData(int $index): ?array {
+    // Check if the student exists at the given index and return the data if it does
+    return $_SESSION['students'][$index] ?? null;
+}
+
 ?>
